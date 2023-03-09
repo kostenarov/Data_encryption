@@ -16,12 +16,6 @@ while True:
     print("Ciphered text: {}".format(ciphertext))
     print("Deciphered text: {}".format(decrypt(ciphertext, key)))
 
-plaintext = b'This is a test'
-ciphertext = encrypt(plaintext, key)
-decrypted_text = decrypt(ciphertext, key)
-print(ciphertext)
-print(decrypted_text)
-
 filePath = "demo/file.txt"
 
 # todo image encryption with base64

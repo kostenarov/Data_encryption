@@ -2,25 +2,37 @@ import os
 from encryption.textEncryption import encrypt, decrypt
 
 
+def write_file(filePath, text, extension):
+    fileWrite = open(filePath, extension)
+    fileWrite.write(text)
+    fileWrite.close()
+
+
+def read_file(filePath, extension):
+    fileRead = open(filePath, extension)
+    string = fileRead.read()
+    fileRead.close()
+    return string
+
+
+def mainFileFunc(string, key):
+    write_file("demo/output.txt", encrypt(string.encode(), key), "wb")
+    inputT = read_file("demo/output.txt", "rb")
+    print(inputT)
+    outputT = decrypt(inputT, key)
+    print(outputT.decode())
+    write_file("demo/output2.txt", outputT.decode(), "w")
+
+
 def is_file_path(string, key):
+    if os.path.isdir(string):
+        print("This is a directory")
     if os.path.isfile(string):
         file = open(string, "r")
         plainText = file.read()
         file.close()
 
-        res = plainText.encode()
-        ciphertext = encrypt(res, key)
-        file = open("demo/output.txt", "wb+")
-        file.write(ciphertext)
-        file.close()
+        mainFileFunc(plainText, key)
 
-        file = open("demo/output.txt", "rb")
-        inputT = file.read()
-        file.close()
-
-        print(inputT)
-        outputT = decrypt(inputT, key)
-        print(outputT.decode())
-        file = open("demo/output2.txt", "w")
-        file.write(outputT.decode())
-        file.close()
+    else:
+        mainFileFunc(string, key)
