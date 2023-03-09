@@ -1,4 +1,5 @@
 import os
+
 from encryption.textEncryption import encrypt, decrypt
 
 
@@ -46,6 +47,7 @@ def is_file_path(string, key):
         file.close()
 
         mainFileFunc("demo/output/temp", plainText, key)
+        return plainText
 
     else:
         mainFileFunc("demo/output/temp", string, key)

@@ -1,9 +1,10 @@
 import numpy as np
 from PIL import Image
 
-def encode(message):
+
+def encode(message, src=r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\OIP.jpeg"):
     # open image and convert from rgb to rgba and get size
-    img = Image.open(r"C:\Users\emily\OneDrive\Работен плот\cupcake.png")
+    img = Image.open(src)
     img = img.convert("RGBA")
     width, height = img.size
     # convert to array of pixels and get how many there are
@@ -12,6 +13,7 @@ def encode(message):
     pixels = array.size // mode
     # make a delimeter to know when to stop decoding, convert the message
     # to binary and calculate how many pixels you need
+    message += '\0'
     message += '\0'
     binary_message = ''.join([format(ord(i), "08b") for i in message])
     required_pixels = len(binary_message)
@@ -25,10 +27,10 @@ def encode(message):
                 break
     array = array.reshape(height, width, mode)
     enc_img = Image.fromarray(array.astype('uint8'), img.mode)
-    enc_img.save(r"C:\Users\emily\OneDrive\Работен плот\enc.png")
+    enc_img.save(r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\test.png")
 
 
-def decode(src):
+def decode(src=r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\test.png"):
     img = Image.open(src, 'r')
     array = np.array(list(img.getdata()))
     mode = 4
@@ -56,9 +58,6 @@ def decode(src):
             message += chr(int(hidden_bits[i], 2))
     if '\0' in message:
         print("Hidden Message:", message[:-1])
+        return message[:-1]
     else:
         print("No Hidden Message Found")
-
-
-encode("dabber is awesome :0")
-decode(r"C:\Users\emily\OneDrive\Работен плот\enc.png")
