@@ -12,4 +12,6 @@ def is_file_path(string, key):
         print(ciphertext)
         print(decrypt(ciphertext, key).decode())
         file = open("demo/output.txt", "w")
-        file.write(ciphertext.decode())
+        helper = ciphertext.decode("utf-8")
+        print(helper)
+        #file.write(helper.str())
