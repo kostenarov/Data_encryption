@@ -34,18 +34,12 @@ def read_file(filePath, extension):
 
 def is_file_path(string, key):
     if os.path.isdir(string):
-        for file in os.listdir(string):
-            if os.path.isfile(string + "/" + file):
-                file = open(string + "/" + file, "r")
-                plainText = file.read()
-                file.close()
-                encodeData(plainText, key, r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\OIP.jpeg")
+        print("Not yet implemented")
 
     elif os.path.isfile(string):
         file = open(string, "r")
         plainText = file.read()
         file.close()
-
         encodeData(plainText, key)
 
     else:
