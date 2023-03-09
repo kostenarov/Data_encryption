@@ -16,7 +16,7 @@ while True:
     print("Ciphered text: {}".format(ciphertext))
     print("Deciphered text: {}".format(decrypt(ciphertext, key)))
 
-filePath = "demo/file.txt"
+filePath = "demo/input/file.txt"
 
 # todo image encryption with base64
 is_file_path(filePath, key)

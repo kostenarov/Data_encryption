@@ -15,24 +15,37 @@ def read_file(filePath, extension):
     return string
 
 
-def mainFileFunc(string, key):
-    write_file("demo/output.txt", encrypt(string.encode(), key), "wb")
-    inputT = read_file("demo/output.txt", "rb")
+def mainFileFunc(outputPath, string, key):
+    write_file("demo/encryptedMessage.txt", encrypt(string.encode(), key), "wb")
+    inputT = read_file("demo/encryptedMessage.txt", "rb")
     print(inputT)
     outputT = decrypt(inputT, key)
     print(outputT.decode())
-    write_file("demo/output2.txt", outputT.decode(), "w")
+    write_file(outputPath, outputT.decode(), "w")
+
+
+def separateFileExtension(filePath):
+    return filePath.split(".")[-1]
 
 
 def is_file_path(string, key):
     if os.path.isdir(string):
-        print("This is a directory")
-    if os.path.isfile(string):
+        for file in os.listdir(string):
+            if os.path.isfile(string + "/" + file):
+                file = open(string + "/" + file, "r")
+                name = file.name.split("/")[-1]
+                name = name.split(".")[0]
+                plainText = file.read()
+                file.close()
+
+                mainFileFunc("demo/output/output" + name, plainText, key)
+
+    elif os.path.isfile(string):
         file = open(string, "r")
         plainText = file.read()
         file.close()
 
-        mainFileFunc(plainText, key)
+        mainFileFunc("demo/output/temp", plainText, key)
 
     else:
-        mainFileFunc(string, key)
+        mainFileFunc("demo/output/temp", string, key)
