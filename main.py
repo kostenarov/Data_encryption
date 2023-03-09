@@ -20,9 +20,9 @@ plaintext = b'This is a test'
 ciphertext = encrypt(plaintext, key)
 decrypted_text = decrypt(ciphertext, key)
 print(ciphertext)
-print(decrypted_text.decode())
+print(decrypted_text)
 
-filePath = "file.txt"
+filePath = "demo/file.txt"
 
 # todo image encryption with base64
 is_file_path(filePath, key)

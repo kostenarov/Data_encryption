@@ -11,3 +11,5 @@ def is_file_path(string, key):
         ciphertext = encrypt(res, key)
         print(ciphertext)
         print(decrypt(ciphertext, key).decode())
+        file = open("demo/output.txt", "w")
+        file.write(ciphertext.decode())
