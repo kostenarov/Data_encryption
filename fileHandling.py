@@ -1,7 +1,7 @@
 import os
 
-from encryption.Steganography import encode, decode
-from encryption.textEncryption import encrypt, decrypt
+from Steganography import encode, decode
+from textEncryption import encrypt, decrypt
 
 
 def encodeData(data, key, path=r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\mountainLake.png"):
