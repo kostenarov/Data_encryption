@@ -9,8 +9,9 @@ app = Flask(__name__)
 @app.route('/encode', methods=['POST'])
 def encode_data():
     if 'data' in request.files:
-        data = request.data.decode('utf-8')
-        print(data)
+        data = request.files['data']
+        data.save(r"demo/input.txt")
+        data = open(r"demo/input.txt", "r").read()
     elif 'data' in request.form:
         data = request.form['data']
     else:
