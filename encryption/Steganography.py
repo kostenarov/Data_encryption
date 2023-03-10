@@ -1,6 +1,5 @@
 import numpy as np
 from PIL import Image
-from stegano import lsb
 
 def encode(message, src):
     img = Image.open(src)
@@ -30,34 +29,27 @@ def encode(message, src):
     enc_img.save("encoded.png")
     enc_img.show()
 
-def decode(src=r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\test.png"):
+def decode(src):
     img = Image.open(src, 'r')
     array = np.array(list(img.getdata()))
-    mode = 4
-    pixels = array.size // mode
+    mode = img.mode
+    channels = len(mode)
+    pixels = array.size // channels
     hidden_bits = ""
-    second = False
+    delimiter_found = False
     for p in range(pixels):
-        for q in range(0, 4):
-            hidden_bits += (bin(array[p][q])[2:][-1])
-        if not second:
-            second = True
-        elif second:
-            second = False
-            hidden_char = chr(int(hidden_bits[-8:]))
-            if hidden_char == '\0':
-                break
-
-    hidden_bits = [hidden_bits[i:i + 8] for i in range(0, len(hidden_bits), 8)]
-
-    message = ""
-    for i in range(len(hidden_bits)):
-        if message[-1:] == '\0':
+        if delimiter_found:
             break
-        else:
-            message += chr(int(hidden_bits[i], 2))
-    if '\0' in message:
-        print("Hidden Message:", message[:-1])
-        return message[:-1]
+        for q in range(channels):
+            hidden_bits += (bin(array[p][q])[2:][-1])
+            if len(hidden_bits) >= 32 and hidden_bits[-32:] == "00000000000000000000000000000000":
+                delimiter_found = True
+                hidden_bits = hidden_bits[:-32]
+                break
+    if delimiter_found:
+        message_bytes = [hidden_bits[i:i+8] for i in range(0, len(hidden_bits), 8)]
+        message = ''.join([chr(int(byte, 2)) for byte in message_bytes])
+        print("Hidden:", message)
     else:
-        print("No Hidden Message Found")
+        print("No delimiter found")
+    return message
