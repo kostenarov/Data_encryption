@@ -1,25 +1,43 @@
-import os
-from flask import request, app, jsonify
-from fileHandling import encodeData, decodeData
+from PIL import Image
+from flask import request, app, jsonify, Flask
+from fileHandling import decodeData, is_file_path, encodeData
+from textEncryption import pad
+
+app = Flask(__name__)
 
 
+@app.route('/encode', methods=['POST'])
 def encode_data():
-    data = request.form['data']
+    if 'data' in request.files:
+        data = request.data.decode('utf-8')
+        print(data)
+    elif 'data' in request.form:
+        data = request.form['data']
+    else:
+        return jsonify({"status": "error", "message": "No data provided"})
+
     key = request.form['key']
-    image = request.files['image']
-    image.save('input.png')
-    encodeData(data, key, 'input.png')
-    with open('output.png', 'rb') as f:
-        encoded_image = f.read()
-    os.remove('input.png')
-    os.remove('output.png')
-    return jsonify({'encoded_image': encoded_image})
+    if len(key.encode()) not in (16, 24, 32):
+        key = pad(key.encode())[:32]
+    img = request.files['image']
+    img.save(r"demo/input.png")
+    img = Image.open(r"demo/input.png")
+    encodeData(data, key, img)
+    return jsonify({"status": "success"})
+
 
 @app.route('/decode', methods=['POST'])
 def decode_data():
     key = request.form['key']
+    if len(key.encode()) not in (16, 24, 32):
+        key = pad(key.encode())[:32]
+    print(key)
     image = request.files['image']
-    image.save('input.png')
-    data = decodeData(key, 'input.png')
-    os.remove('input.png')
-    return jsonify({'data': data})
+    image.save(r"demo/input.png")
+    image = Image.open(r"demo/input.png")
+    data = decodeData(key, image)
+    return data
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

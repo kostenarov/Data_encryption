@@ -4,14 +4,14 @@ from Steganography import encode, decode
 from textEncryption import encrypt, decrypt
 
 
-def encodeData(data, key, path=r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\mountainLake.png"):
+def encodeData(data, key, img):
     temp = encrypt(data.encode(), key)
     temp = "{}".format(temp)
-    encode(temp, path)
+    encode(temp, img)
 
 
-def decodeData(key, path=r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\test.png"):
-    temp = decode(path)
+def decodeData(key, img):
+    temp = decode(img)
     temp = temp.encode('latin1').decode('unicode_escape').encode('latin1')
     helper = b''
     for i in range(2, len(temp) - 1):
@@ -32,15 +32,21 @@ def read_file(filePath, extension):
     return string
 
 
-def is_file_path(string, key):
+def is_file_path(string, key, img):
     if os.path.isdir(string):
-        print("Not yet implemented")
+        for file in os.listdir(string):
+            if os.path.isfile(string + "/" + file):
+                file = open(string + "/" + file, "r")
+                plainText = file.read()
+                file.close()
+                encodeData(plainText, key, img)
 
     elif os.path.isfile(string):
         file = open(string, "r")
         plainText = file.read()
         file.close()
-        encodeData(plainText, key)
+
+        encodeData(plainText, key, img)
 
     else:
-        encodeData(string, key, r"C:\Users\petoc\PycharmProjects\Data_encryption\demo\OIP.jpeg")
+        encodeData(string, key, img)
