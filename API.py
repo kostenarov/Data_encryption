@@ -32,7 +32,6 @@ def decode_data():
     key = request.form['key']
     if len(key.encode()) not in (16, 24, 32):
         key = pad(key.encode())[:32]
-    print(key)
     image = request.files['image']
     image.save(r"demo/input.png")
     image = Image.open(r"demo/input.png")
