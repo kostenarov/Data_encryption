@@ -14,6 +14,9 @@ class _FilePageState extends State<FilePage> {
   late File _file;
   String _text = '';
   String? _fileName;
+  final _passwordController = TextEditingController();
+  String passwordToEncrypt = "";
+  late File textToEncrypt;
 
   Future<void> _importFile() async {
     // Show file picker dialog
@@ -62,14 +65,32 @@ class _FilePageState extends State<FilePage> {
             ),
             const SizedBox(height: 16),
             if (_fileName != null)
-              Text(
-                'Selected file: $_fileName',
-                style: const TextStyle(fontSize: 26),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Selected file: $_fileName',
+                  style: const TextStyle(fontSize: 26),
+                ),
               ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                    hintText: 'Input password here',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          _passwordController.clear();
+                        },
+                        icon: const Icon(Icons.clear))),
+              ),
+            ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 // tuk trqbva da e vruzkata s algorituma
+                passwordToEncrypt = _passwordController.text;
                 Navigator.push(
                     context,
                     MaterialPageRoute(

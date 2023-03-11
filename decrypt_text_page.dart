@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ytresxcvbnm/pages/home_page.dart';
 import 'package:ytresxcvbnm/pages/import_image_page.dart';
 
-class TextPage extends StatefulWidget {
-  const TextPage({super.key});
+class DecryptTextPage extends StatefulWidget {
+  const DecryptTextPage({super.key});
 
   @override
-  State<TextPage> createState() => _TextPageState();
+  State<DecryptTextPage> createState() => _DecryptTextPageState();
 }
 
-class _TextPageState extends State<TextPage> {
+class _DecryptTextPageState extends State<DecryptTextPage> {
   final _textController = TextEditingController();
 
   String textToEncrypt = "";
@@ -22,7 +23,7 @@ class _TextPageState extends State<TextPage> {
       body: Padding(
         padding: const EdgeInsets.all(10.100),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
@@ -35,17 +36,6 @@ class _TextPageState extends State<TextPage> {
                         textAlign: TextAlign.center,
                       ),
                     ))),
-            TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                  hintText: 'Input text here',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        _textController.clear();
-                      },
-                      icon: const Icon(Icons.clear))),
-            ),
             MaterialButton(
               onPressed: () {
                 setState(() {
@@ -53,12 +43,12 @@ class _TextPageState extends State<TextPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ImportImagePage()));
+                          builder: (context) => const HomePage()));
                 });
               },
               color: Colors.blue,
               child: const Text(
-                "Continue",
+                "Home",
                 style: TextStyle(color: Colors.white),
               ),
             )

@@ -3,18 +3,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ytresxcvbnm/pages/after_encryption_image_page.dart';
+import 'package:ytresxcvbnm/pages/decrypt_text_page.dart';
 
-class ImportImagePage extends StatefulWidget {
-  const ImportImagePage({super.key});
+class DecryptPage extends StatefulWidget {
+  const DecryptPage({super.key});
 
   @override
-  State<ImportImagePage> createState() => _ImportImagePageState();
+  State<DecryptPage> createState() => _DecryptPageState();
 }
 
-class _ImportImagePageState extends State<ImportImagePage> {
+class _DecryptPageState extends State<DecryptPage> {
   File? _image;
   XFile _pickedFile = XFile('');
   final _picker = ImagePicker();
+  final _passwordController = TextEditingController();
+  String passwordToEncrypt = "";
   Future<void> _pickImage() async {
     _pickedFile = (await _picker.pickImage(source: ImageSource.gallery))!;
     if (_pickedFile != null) {
@@ -39,7 +42,7 @@ class _ImportImagePageState extends State<ImportImagePage> {
                     child: GestureDetector(
                         child: const Text("Select image"),
                         onTap: () => _pickImage())),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Container(
                   alignment: Alignment.center,
                   width: double.infinity,
@@ -53,6 +56,20 @@ class _ImportImagePageState extends State<ImportImagePage> {
                       : const SizedBox.shrink(),
                 ),
                 Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                        hintText: 'Input password here',
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              _passwordController.clear();
+                            },
+                            icon: const Icon(Icons.clear))),
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Center(
                       child: ElevatedButton(
@@ -61,8 +78,7 @@ class _ImportImagePageState extends State<ImportImagePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const AfterEncryptionImagePage()));
+                              builder: (context) => const DecryptTextPage()));
                     },
                     child:
                         const Text("Convert", style: TextStyle(fontSize: 26)),
@@ -72,9 +88,3 @@ class _ImportImagePageState extends State<ImportImagePage> {
     );
   }
 }
-
-
-// zapazvane na image-a nqkude
-// convert button:
-// 1. Svurzano s convert algoritum
-
